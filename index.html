@@ -7,29 +7,49 @@
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
   <style>
-    body { font-family: sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
-    nav { background: #222; padding: 15px; text-align: center; }
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
+    nav { background: #222; padding: 15px; text-align: center; display: none; }
     nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
     nav a:hover { text-decoration: underline; }
-    .container { text-align: center; padding: 50px; }
-    button { margin-top: 30px; padding: 10px 20px; font-size: 16px; }
+    .container { text-align: center; padding: 60px 20px; }
+    .auth-btn { margin-top: 20px; padding: 10px 20px; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; }
+    #login-btn { background: #4285f4; color: white; }
+    #logout-btn { background: #d9534f; color: white; display: none; }
+
+    footer {
+      margin-top: 60px;
+      background: #333;
+      color: #fff;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #9fd8ff;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    footer a.button {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
-      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
-      projectId: "craftbeerschool-5e7d0",
-      projectNumber: "475935295190"
-    };
-    firebase.initializeApp(firebaseConfig);
-    firebase.auth().onAuthStateChanged(user => {
-      if (!user) window.location.href = "login.html";
-    });
-  </script>
 
-  <nav>
+  <nav id="calculator-nav">
     <a href="https://ankurnapa.github.io/yeast-pitching_calculator/">Yeast Pitching</a>
     <a href="https://ankurnapa.github.io/Beer-OG-FG-Calculator/">OG–FG & ABV</a>
     <a href="https://ankurnapa.github.io/Hops-Calculator/">Hops IBU</a>
@@ -38,7 +58,63 @@
   <div class="container">
     <h1>Welcome to Craft Beer School 🍻</h1>
     <p>Use our brewing calculators to refine your recipes and ferment like a pro.</p>
-    <button onclick="firebase.auth().signOut().then(() => window.location.href='login.html')">Logout</button>
+
+    <!-- Login/Logout Buttons -->
+    <button id="login-btn" class="auth-btn" onclick="login()">Login with Google</button>
+    <button id="logout-btn" class="auth-btn" onclick="logout()">Logout</button>
   </div>
+
+  <footer>
+    <p><strong>Craft Beer School</strong> is your go-to hub for brewing science, equipment know-how, and recipe mastery.</p>
+    <p>🔗 Join our community:
+      <a href="https://chat.whatsapp.com/EPk7V7zrhon2BmV5cbDH78" target="_blank">WhatsApp Group</a> |
+      <a href="https://nas.io/craftbeer" target="_blank">Craft Beer School on NAS.io</a>
+    </p>
+    <p>📬 Contact Me:
+      <a href="https://www.linkedin.com/in/ankur-napa" target="_blank">LinkedIn</a> |
+      <a href="https://wa.me/918285904648" target="_blank">Message me on WhatsApp</a>
+    </p>
+    <a class="button" href="https://nas.io/craftbeer" target="_blank">🚀 Join Craft Beer School Now</a>
+    <p style="margin-top: 10px;">Built with ❤️ by <strong>Ankur Napa</strong>, Brewer & Data Engineer</p>
+  </footer>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
+      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
+      projectId: "craftbeerschool-5e7d0",
+      projectNumber: "475935295190"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(() => location.reload())
+        .catch(e => alert("Login failed: " + e.message));
+    }
+
+    function logout() {
+      auth.signOut().then(() => location.reload());
+    }
+
+    auth.onAuthStateChanged(user => {
+      const loginBtn = document.getElementById('login-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const nav = document.getElementById('calculator-nav');
+
+      if (user) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        nav.style.display = 'block';
+      } else {
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        nav.style.display = 'none';
+      }
+    });
+  </script>
+
 </body>
 </html>
