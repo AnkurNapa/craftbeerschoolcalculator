@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login - Craft Beer School</title>
+  <title>Login Test</title>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
-  <style>
-    body { font-family: sans-serif; display: flex; height: 100vh; align-items: center; justify-content: center; background: #f2f2f2; }
-    .box { background: white; padding: 40px; border-radius: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    button { padding: 12px 24px; font-size: 16px; background: #4285f4; color: white; border: none; border-radius: 6px; cursor: pointer; }
-    button:hover { background: #3367d6; }
-  </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Login to Craft Beer School</h2>
-    <p>Use your Google account to access tools</p>
-    <button onclick="login()">Login with Google</button>
-  </div>
+  <button onclick="login()">Login with Google</button>
 
   <script>
     const firebaseConfig = {
@@ -27,13 +16,16 @@
       projectNumber: "475935295190"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
 
     function login() {
       const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(() => window.location.href = "index.html")
-        .catch(e => alert("Login failed: " + e.message));
+      firebase.auth().signInWithPopup(provider)
+        .then(result => {
+          alert("Hello, " + result.user.displayName);
+        })
+        .catch(error => {
+          alert("Login failed: " + error.message);
+        });
     }
   </script>
 </body>
