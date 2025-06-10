@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Craft Beer School 🍺</title>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
+  <style>
+    body { font-family: sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    nav { background: #222; padding: 15px; text-align: center; }
+    nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
+    nav a:hover { text-decoration: underline; }
+    .container { text-align: center; padding: 50px; }
+    button { margin-top: 30px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
+      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
+      projectId: "craftbeerschool-5e7d0",
+      projectNumber: "475935295190"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) window.location.href = "login.html";
+    });
+  </script>
+
+  <nav>
+    <a href="https://ankurnapa.github.io/yeast-pitching_calculator/">Yeast Pitching</a>
+    <a href="https://ankurnapa.github.io/Beer-OG-FG-Calculator/">OG–FG & ABV</a>
+    <a href="https://ankurnapa.github.io/Hops-Calculator/">Hops IBU</a>
+  </nav>
+
+  <div class="container">
+    <h1>Welcome to Craft Beer School 🍻</h1>
+    <p>Use our brewing calculators to refine your recipes and ferment like a pro.</p>
+    <button onclick="firebase.auth().signOut().then(() => window.location.href='login.html')">Logout</button>
+  </div>
+</body>
+</html>
