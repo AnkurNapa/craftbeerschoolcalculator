@@ -5,10 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Craft Beer School 🍺</title>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
+  <!-- Firebase SDK (deferred) -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
 
+  <!-- Your Firebase + Auth Logic -->
+  <script defer>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
+      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
+      projectId: "craftbeerschool-5e7d0",
+      projectNumber: "475935295190"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          alert("Welcome, " + result.user.displayName);
+          location.reload();
+        })
+        .catch(error => {
+          alert("Login failed: " + error.message);
+          console.error(error);
+        });
+    }
+
+    function logout() {
+      auth.signOut().then(() => location.reload());
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const loginBtn = document.getElementById("login-btn");
+      const logoutBtn = document.getElementById("logout-btn");
+      const nav = document.getElementById("calculator-nav");
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "inline-block";
+          nav.style.display = "block";
+        } else {
+          loginBtn.style.display = "inline-block";
+          logoutBtn.style.display = "none";
+          nav.style.display = "none";
+        }
+      });
+    });
+  </script>
+
+  <!-- Styles -->
   <style>
     body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
     nav { background: #222; padding: 15px; text-align: center; display: none; }
@@ -60,19 +109,19 @@
 </head>
 <body>
 
-  <!-- Calculator Navbar -->
+  <!-- Calculator Navbar (visible only after login) -->
   <nav id="calculator-nav">
     <a href="https://ankurnapa.github.io/yeast-pitching_calculator/">Yeast Pitching</a>
     <a href="https://ankurnapa.github.io/Beer-OG-FG-Calculator/">OG–FG & ABV</a>
     <a href="https://ankurnapa.github.io/Hops-Calculator/">Hops IBU</a>
   </nav>
 
-  <!-- Main Content -->
+  <!-- Main Section -->
   <div class="container">
     <h1>Welcome to Craft Beer School 🍻</h1>
     <p>Use our brewing calculators to refine your recipes and ferment like a pro.</p>
 
-    <!-- Login/Logout Buttons -->
+    <!-- Auth Buttons -->
     <button id="login-btn" class="auth-btn" onclick="login()">Login with Google</button>
     <button id="logout-btn" class="auth-btn" onclick="logout()">Logout</button>
   </div>
@@ -91,42 +140,6 @@
     <a class="button" href="https://nas.io/craftbeer" target="_blank">🚀 Join Craft Beer School Now</a>
     <p style="margin-top: 10px;">Built with ❤️ by <strong>Ankur Napa</strong>, Brewer & Data Engineer</p>
   </footer>
-
-  <!-- Firebase Login Script -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
-      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
-      projectId: "craftbeerschool-5e7d0",
-      projectNumber: "475935295190"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          alert("Welcome, " + result.user.displayName);
-          location.reload();
-        })
-        .catch(error => {
-          alert("Login failed: " + error.message);
-          console.error(error);
-        });
-    }
-
-    function logout() {
-      auth.signOut().then(() => location.reload());
-    }
-
-    auth.onAuthStateChanged(user => {
-      document.getElementById("login-btn").style.display = user ? "none" : "inline-block";
-      document.getElementById("logout-btn").style.display = user ? "inline-block" : "none";
-      document.getElementById("calculator-nav").style.display = user ? "block" : "none";
-    });
-  </script>
 
 </body>
 </html>
