@@ -5,79 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Craft Beer School 🍺</title>
 
-  <!-- Firebase SDK (deferred) -->
-  <script defer src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js"></script>
-
-  <!-- Your Firebase + Auth Logic -->
-  <script defer>
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4VQL_56cuK-BYrJCl790CJ_VRq_rZfkl",
-      authDomain: "craftbeerschool-5e7d0.firebaseapp.com",
-      projectId: "craftbeerschool-5e7d0",
-      projectNumber: "475935295190"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    function login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          alert("Welcome, " + result.user.displayName);
-          location.reload();
-        })
-        .catch(error => {
-          alert("Login failed: " + error.message);
-          console.error(error);
-        });
-    }
-
-    function logout() {
-      auth.signOut().then(() => location.reload());
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const loginBtn = document.getElementById("login-btn");
-      const logoutBtn = document.getElementById("logout-btn");
-      const nav = document.getElementById("calculator-nav");
-
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          loginBtn.style.display = "none";
-          logoutBtn.style.display = "inline-block";
-          nav.style.display = "block";
-        } else {
-          loginBtn.style.display = "inline-block";
-          logoutBtn.style.display = "none";
-          nav.style.display = "none";
-        }
-      });
-    });
-  </script>
-
-  <!-- Styles -->
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background: #f8f8f8; }
-    nav { background: #222; padding: 15px; text-align: center; display: none; }
-    nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
-    nav a:hover { text-decoration: underline; }
-
-    .container { text-align: center; padding: 60px 20px; }
-    .auth-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f8f8;
     }
-    #login-btn { background: #4285f4; color: white; }
-    #logout-btn { background: #d9534f; color: white; display: none; }
+
+    nav {
+      background: #222;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .calculator {
+      background: #fff;
+      border-radius: 8px;
+      padding: 25px;
+      margin: 30px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      text-align: left;
+    }
+
+    .calculator h2 {
+      margin-top: 0;
+    }
+
+    .calculator a {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
 
     footer {
-      margin-top: 60px;
       background: #333;
       color: #fff;
       padding: 30px 20px;
@@ -109,21 +93,38 @@
 </head>
 <body>
 
-  <!-- Calculator Navbar (visible only after login) -->
-  <nav id="calculator-nav">
-    <a href="https://ankurnapa.github.io/yeast-pitching_calculator/">Yeast Pitching</a>
-    <a href="https://ankurnapa.github.io/Beer-OG-FG-Calculator/">OG–FG & ABV</a>
-    <a href="https://ankurnapa.github.io/Hops-Calculator/">Hops IBU</a>
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#yeast">Yeast Calculator</a>
+    <a href="#abv">OG–FG & ABV</a>
+    <a href="#hops">Hops IBU</a>
   </nav>
 
-  <!-- Main Section -->
+  <!-- Main Content -->
   <div class="container">
     <h1>Welcome to Craft Beer School 🍻</h1>
-    <p>Use our brewing calculators to refine your recipes and ferment like a pro.</p>
+    <p>Explore our free brewing calculators to help you craft better beer with science-backed precision.</p>
 
-    <!-- Auth Buttons -->
-    <button id="login-btn" class="auth-btn" onclick="login()">Login with Google</button>
-    <button id="logout-btn" class="auth-btn" onclick="logout()">Logout</button>
+    <!-- Yeast Calculator -->
+    <div class="calculator" id="yeast">
+      <h2>🧪 Yeast Pitching Calculator</h2>
+      <p>Determine the optimal amount of yeast to pitch based on your beer’s gravity and batch size. Proper pitching improves fermentation health, reduces off-flavors, and helps achieve your target attenuation.</p>
+      <a href="https://ankurnapa.github.io/yeast-pitching_calculator/" target="_blank">Use Yeast Calculator</a>
+    </div>
+
+    <!-- OG-FG & ABV Calculator -->
+    <div class="calculator" id="abv">
+      <h2>🍯 OG–FG & ABV Estimator</h2>
+      <p>Enter your Original Gravity and Final Gravity to calculate the Alcohol by Volume (ABV) of your beer. This tool helps you verify fermentation progress and design recipes that hit your target strength.</p>
+      <a href="https://ankurnapa.github.io/Beer-OG-FG-Calculator/" target="_blank">Use OG–FG & ABV Tool</a>
+    </div>
+
+    <!-- Hops Calculator -->
+    <div class="calculator" id="hops">
+      <h2>🌿 Hops Bitterness Calculator (IBU)</h2>
+      <p>Estimate the bitterness level of your beer in International Bitterness Units (IBU). Adjust for hop variety, alpha acids, boil time, and wort volume to get balanced bitterness for your style.</p>
+      <a href="https://ankurnapa.github.io/Hops-Calculator/" target="_blank">Use Hops Calculator</a>
+    </div>
   </div>
 
   <!-- Footer -->
